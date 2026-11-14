@@ -1,0 +1,5 @@
+.pwrx { display: flex; flex-direction: column; gap: 8px; padding: 6px 2px; }
+.pwrx-note { font-size: 0.9em; opacity: 0.85; line-height: 1.4; }
+.pwrx-row { display: flex; gap: 8px; }
+.pwrx-b { flex: 1; padding: 7px 10px; border-radius: 10px; border: 1px solid var(--SmartThemeBorderColor); background: var(--SmartThemeBlurTintColor); color: var(--SmartThemeBodyColor); cursor: pointer; }
+.pwrx-ghost { flex: 0 0 auto; opacity: 0.8; }
