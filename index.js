@@ -1,4 +1,3 @@
-// PUSYA WARDROBE для SillyTavern. Переходник: окно 🪞 (panel.js) то же, что в Tavo, а здесь Tavo-подобный API поверх Таверны.
 import {
     eventSource,
     event_types,
@@ -23,7 +22,6 @@ function store() {
     return s;
 }
 
-/* ---------- язык ---------- */
 function locale() {
     let l = '';
     try { l = String(localStorage.getItem('language') || navigator.language || ''); } catch {}
@@ -36,7 +34,6 @@ function t(k, p) {
     return s;
 }
 
-/* ---------- отступы для плавающей кнопки ---------- */
 const insetWatchers = [];
 function insets() {
     const top = document.getElementById('top-bar');
@@ -67,7 +64,6 @@ function fire(name, detail) {
     try { window.dispatchEvent(new CustomEvent(name, { detail: d })); } catch {}
 }
 
-/* ---------- файлы: фото и база лежат в IndexedDB этого браузера ---------- */
 let dbPromise = null;
 function idb() {
     if (!dbPromise) {
@@ -118,7 +114,7 @@ function readAs(file, how) {
 const tavoLike = {
     plugin: {
         i18n: { get locale() { return locale(); }, t },
-        on: () => null, // окно слушает window-события, их шлёт fire()
+        on: () => null,
         emit: (name, d) => { try { window.dispatchEvent(new CustomEvent(name, { detail: d })); } catch {} },
     },
     chat: {
@@ -205,7 +201,6 @@ async function vget(name, scope) {
 }
 async function vset(name, val, scope) { await tavoLike.variable.set(name, val == null ? '' : JSON.stringify(val), scope); }
 
-/* ---------- запрос к модели ---------- */
 globalThis.pusyaWardrobeBeforeGenerate = async (chat, contextSize, abort, type) => {
     const P = window.PWR;
     if (!P) return;
@@ -217,7 +212,6 @@ globalThis.pusyaWardrobeBeforeGenerate = async (chat, contextSize, abort, type) 
         st.once = !!(await vget('pwr_once', 'chat'));
         st.last = !!(await vget('pwr_last', 'chat'));
     }
-    // chat — это то, что уйдёт модели (при свайпе старого варианта там уже нет)
     const res = P.compose({
         settings: s,
         worn: await vget('pwr_worn', 'chat'),
@@ -233,7 +227,6 @@ globalThis.pusyaWardrobeBeforeGenerate = async (chat, contextSize, abort, type) 
     setExtensionPrompt(PROMPT_TAG, res.text, extension_prompt_types.IN_CHAT, 0, false, extension_prompt_roles.SYSTEM);
 };
 
-/* ---------- скрытые метки в сообщениях ---------- */
 function hideMarks() {
     document.querySelectorAll('#chat .mes .mes_text').forEach((el) => {
         if (!el.innerHTML.includes('pwr:')) return;
@@ -247,7 +240,6 @@ function soon() {
     renderTimer = setTimeout(() => { hideMarks(); fire('pusya-wr:refresh'); }, 60);
 }
 
-/* ---------- блок в настройках расширений ---------- */
 function mountDrawer() {
     const target = $('#extensions_settings2').length ? '#extensions_settings2' : '#extensions_settings';
     const html = `
